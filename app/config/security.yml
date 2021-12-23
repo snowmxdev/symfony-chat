@@ -31,3 +31,5 @@ security:
         - { path: /register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: /chat/admin, role: ROLE_ADMIN }
         - { path: /chat, role: ROLE_USER } 
+
+        

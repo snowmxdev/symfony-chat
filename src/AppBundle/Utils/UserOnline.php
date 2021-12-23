@@ -137,3 +137,4 @@ class UserOnline
                 ->deleteInactiveUsers($time, $id, $channel);
     }
 }
+

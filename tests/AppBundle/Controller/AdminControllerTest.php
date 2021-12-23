@@ -96,9 +96,9 @@ class AdminControllerTest extends WebTestCase
         if (!$user) {
             $user = $userManager->createUser();
 
-            $user->setEmail('test1@example.com');
-            $user->setUsername('anyUser');
-            $user->setPlainPassword('foo');
+            $user->setEmail('aaa@aaa.com');
+            $user->setUsername('aaa');
+            $user->setPlainPassword('aaa');
             $user->setEnabled(true);
             $user->addRole($role);
 

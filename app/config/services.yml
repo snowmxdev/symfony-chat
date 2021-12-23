@@ -77,3 +77,5 @@ services:
         public: true
         class: AppBundle\Utils\SpecialMessages
         arguments: ['@translator', '@doctrine.orm.entity_manager', '@chat.ChatConfig'] 
+
+        
