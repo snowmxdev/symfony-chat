@@ -1,0 +1,26 @@
+{% extends "::base.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/registration.css') }}" />
+{%  endblock %}
+{% block javascripts %}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock %}
+{%  block content %}
+    {#
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{form_widget(form.name)}}
+    {{form_widget(form.subject)}}
+    {{form_widget(form.message)}}
+    <!-- Now add the widget with the sitekey that you retrieve in the registration -->
+    <div class="g-recaptcha" data-sitekey="mypublicdata-sitekey-ofthe-google-panel"></div>
+
+    {{form_widget(form.submit)}}
+{{form_end(form)}}
+    #}
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+    {{ form_widget(form) }}
+    <input class="btn btn-lg btn-primary btn-block" type="submit" value="{{ 'registration.submit'|trans }}" />
+{{ form_end(form) }}
+{% endblock %}

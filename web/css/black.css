@@ -1,0 +1,36 @@
+html, body, #messages, #online-users, .panel, #message-text {
+    background-color: #222222;
+    color: #FFFFFF;
+}
+
+.text-in-info.active {
+    background: #5cb85c;
+}
+
+.message:nth-child(even) {
+    background-color: #222222;
+}
+
+.message:nth-child(odd) {
+    background-color: #333333;
+}
+
+.message:hover {
+    background: #464a4c;
+}
+
+.message.private-message {
+    background: #1E69DE;
+}
+
+.message.private-message:hover {
+    background: #54A3EE;
+}
+
+.message.light {
+    background: darkgreen;
+}
+
+.message.light:hover {
+    background: #5cb85c;
+}

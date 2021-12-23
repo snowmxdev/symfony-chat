@@ -1,0 +1,50 @@
+panel: Administrator Panel
+logout: Logout
+messages: Messages
+info: Chat Information
+send: Send
+channels: Channels
+online: Users online
+lang: Chat language
+
+bbcode:
+    boldLabel: Bold text [b]Text[/b]
+    boldText: b
+    italicLabel: Italic text [i]Text[/i]
+    italicText: i
+    underlineLabel: Underline text [u]Text[/u]
+    underlineText: u
+    quoteLabel: Quote [quote]Text[/quote]
+    quoteText: Quote
+    codeLabel: Display code [code]Text[/code]
+    codeText: Code
+    urlLabel: Insert URL [url]LINK[/url]
+    urlText: URL
+    imgLabel: Insert image [img]LINK[/img]
+    imgText: IMG
+
+channel:
+    Default: Default
+    Channel 2: Channel 2
+    Private: Private
+    Moderator: Moderator
+    Admin: Administrator
+
+chat:
+    roll: rolls dice chat.dice and gets
+    privFrom: (PM)
+    privTo: (PM to chat.user)
+    inviteToChannel: User chat.user invited you to channel [chat.channel]
+    invitationSent: Sent invitation to channel for user chat.user
+    uninviteSent: User chat.user has been uninvited
+    uninviteToChannel: You have been uninvited from channel [chat.channel]
+
+error:
+    userNotFound: User chat.nick not found
+    wrongUsername: Missing username
+    channelCant: You cannot invite users to this channel
+    invitationSent: Invitation to user chat.user has been sent already
+    invitationSentYou: You cannot send invitation to yourself
+    channelCantUninvite: You cannot uninvite user from this channel
+    uninviteYourself: You cannot uninvite yourself from this channel
+    invitationNotSent: Invitation to user chat.user not found

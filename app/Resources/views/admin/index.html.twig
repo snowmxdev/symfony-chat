@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+{% trans_default_domain 'panel' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-6  text-center">
+            <table class="table">
+                {% for user in users %}
+                    <tr>
+                        <td> {{ user.id }} </td>
+                        <td> {{ user.username }} </td>
+                        <td> {{ user.chatRoleAsText|trans }}</td>
+                        {% if user.chatRoleAsText == 'user' %}
+                            <td>
+                                <a class="btn btn-success" href="{{ path('chat_admin_change', {id : user.id, role : 'moderator'}) }}">
+                                    {{ 'pr_mod'|trans }}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" href="{{ path('chat_admin_change', {id : user.id, role : 'administrator'}) }}">
+                                    {{ 'pr_adm'|trans }}
+                                </a>
+                            </td>
+                        {% endif %}
+                        {% if user.chatRoleAsText == 'moderator' %}
+                            <td>
+                                <a class="btn btn-success" href="{{ path('chat_admin_change', {id : user.id, role : 'administrator'}) }}">
+                                    {{ 'pr_adm'|trans }}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" href="{{ path('chat_admin_change', {id : user.id, role : 'user'}) }}">
+                                    {{ 'dem_user'|trans }}
+                                </a>
+                            </td>
+                        {% endif %}
+                        {% if user.chatRoleAsText == 'administrator' %}
+                            <td>
+                                <a class="btn btn-success" href="{{ path('chat_admin_change', {id : user.id, role : 'moderator'}) }}">
+                                    {{ 'dem_mod'|trans }}
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn btn-success" href="{{ path('chat_admin_change', {id : user.id, role : 'user'}) }}">
+                                    {{ 'dem_user'|trans }}
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

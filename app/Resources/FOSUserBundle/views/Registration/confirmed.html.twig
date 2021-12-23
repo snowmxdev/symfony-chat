@@ -1,0 +1,9 @@
+{% extends "::base.html.twig" %}
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
+        <a href="{{ path("chat_index") }}" class="btn btn-info">Przejdź do chatu</a>
+    </div>
+{% endblock %}

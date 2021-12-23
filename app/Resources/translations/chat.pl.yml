@@ -1,0 +1,50 @@
+panel: Panel Administratora
+logout: Wyloguj
+messages: Wiadomości
+info: Informacje o chacie
+send: Wyślij
+channels: Kanały
+online: Użytkownicy online
+lang: Język na chacie
+
+bbcode:
+    boldLabel: Pogrubienie [b]Tekst[/b]
+    boldText: b
+    italicLabel: Kursywa [i]Tekst[/i]
+    italicText: i
+    underlineLabel: Tekst podkreślony [u]Tekst[/u]
+    underlineText: u
+    quoteLabel: Cytat [quote]Tekst[/quote]
+    quoteText: Cytat
+    codeLabel: Wyświetl kod [code]Tekst[/code]
+    codeText: Kod
+    urlLabel: Wstaw adres [url]LINK[/url]
+    urlText: URL
+    imgLabel: Wstaw obrazek [img]LINK[/img]
+    imgText: IMG
+
+channel:
+    Default: Domyślny
+    Channel 2: Kanał 2
+    Private: Prywatny
+    Moderator: Moderator
+    Admin: Administrator
+
+chat:
+    roll: rzuca kostką chat.dice i otrzymuje wyniki
+    privFrom: (PW)
+    privTo: (PW do chat.user)
+    inviteToChannel: Użytkownik chat.user zaprosił Cię do kanału [chat.channel]
+    invitationSent: Wysłano zaproszenie do kanału dla gracza chat.user
+    uninviteSent: Wyproszono użytkownika chat.user
+    uninviteToChannel: Wyproszono Cię z kanału [chat.channel]
+
+error:
+    userNotFound: Użytkownik chat.nick nie znaleziony
+    wrongUsername: Nie podano użytkownika
+    channelCant: Nie możesz zaprosić użytkownika do tego kanału
+    invitationSent: Zaproszenie do użytkownika chat.user zostało już wysłane
+    invitationSentYou: Nie możesz wysłać zaproszenia do samego siebie
+    channelCantUninvite: Nie można usunąć zaproszenia z tego kanału
+    uninviteYourself: Nie możesz usunąć zaproszenia samego siebie z tego kanału
+    invitationNotSent: Nie znaleziono zaproszenia dla użytkownika chat.user

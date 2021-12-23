@@ -1,0 +1,79 @@
+# Learn more about services, parameters and containers at
+# https://symfony.com/doc/current/service_container.html
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: false
+
+    # makes classes in src/AppBundle available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    AppBundle\:
+        resource: '../../src/AppBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
+
+    # controllers are imported separately to make sure they're public
+    # and have a tag that allows actions to type-hint services
+    AppBundle\Controller\:
+        resource: '../../src/AppBundle/Controller'
+        tags: ['controller.service_arguments']
+
+    checkLoginMyBB:
+        class: AppBundle\EventListener\LoginByMyBBListener
+        arguments: ['@session', '@doctrine.orm.entity_manager', '@security.token_storage',
+                    '@router', '@request_stack', '@fos_user.user_manager'
+                    ]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    checkLoginPhpBB:
+        class: AppBundle\EventListener\LoginByPhpBBListener
+        arguments: ['@session', '@doctrine.orm.entity_manager', '@security.token_storage',
+                    '@router', '@request_stack', '@fos_user.user_manager'
+                    ]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    chat.registration_complet:
+        class: AppBundle\EventListener\RegistrationCompleteListener
+        arguments: ['@router']
+        tags:
+            - { name: kernel.event_subscriber }
+
+    chat.Message:
+        public: true
+        class: AppBundle\Utils\Message
+        arguments: ['@doctrine.orm.entity_manager', '@session', '@chat.ChatConfig', '@chat.SpecialMessage']
+
+    chat.OnlineUsers:
+        public: true
+        class: AppBundle\Utils\UserOnline
+        arguments: ['@doctrine.orm.entity_manager', '@chat.ChatConfig']
+
+    chat.ChatConfig:
+        public: true
+        class: AppBundle\Utils\ChatConfig
+        arguments: ['@security.authorization_checker']
+
+    chat.Channel:
+        public: true
+        class: AppBundle\Utils\Channel
+        arguments: ['@chat.ChatConfig', '@session', '@chat.OnlineUsers']
+
+    chat.AdminPanel:
+        public: true
+        class: AppBundle\Utils\AdminPanel
+        arguments: ['@doctrine.orm.entity_manager']
+
+    chat.SpecialMessage:
+        public: true
+        class: AppBundle\Utils\SpecialMessages
+        arguments: ['@translator', '@doctrine.orm.entity_manager', '@chat.ChatConfig'] 

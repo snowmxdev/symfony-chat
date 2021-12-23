@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+{% trans_default_domain 'index' %}
+{% block content %}
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>{{ 'title'|trans }}</h1>
+            <p>
+                {{ 'start'|trans }}
+            </p>
+            <a class="btn btn-success" href="{{ path('fos_user_security_login') }}">{{ 'login'|trans }}</a>
+            <a class="btn btn-warning" href="{{ path('fos_user_registration_register') }}">{{ 'register'|trans }}</a>
+        </div>
+    </div>
+{% endblock %}

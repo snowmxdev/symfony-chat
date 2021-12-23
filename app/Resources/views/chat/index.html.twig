@@ -1,0 +1,212 @@
+{% extends '::base.html.twig' %}
+{% trans_default_domain 'chat' %}
+
+{% block javascripts %}
+    <script>
+        var sendPath = '{{ url('chat_add') }}';
+        var refreshPath = '{{ url('chat_refresh') }}';
+        var changeChannelPath = '{{ url('change_channel_chat') }}';
+        var languagePath = {
+            'pl': '{{ url("homepage", {"_locale" : "pl"}) }}',
+            'en': '{{ url("homepage", {"_locale" : "en"}) }}'
+        };
+        var self = {
+            'username': '{{ user.username }}',
+            'role': '{{ user.getChatRoleAsText }}',
+        };
+        var emoticons = [
+            ':)',
+            ':(',
+            ';)',
+            [
+                ':P',
+                ';p',
+                ';P'
+            ],
+            [
+                ':D',
+                ';D',
+                ':d',
+                ';d'
+            ],
+            [
+                ':|',
+                ';/'
+            ],
+            [
+                ':O',
+                ';o',
+                ';O'
+            ],
+            ':?',
+            '8)',
+            '8o',
+            'B)',
+            ':-)',
+            ':-(',
+            [
+                ':-*',
+                ':*'
+            ],
+            'O:-D',
+            '>:-D',
+            ':o)',
+            ':idea:',
+            ':important:',
+            ':help:',
+            ':error:',
+            ':warning:',
+            ':favorite:',
+            ':pepe:',
+            ':ie:',
+            ':cebula:',
+            ':shock:',
+            ':zolwik:',
+            ':predobear:',
+            ':mis:',
+            ':gengar:',
+            ':piplup:'
+        ];
+        {# emoticons from Ajax Chat http://frug.github.io/AJAX-Chat/ #}
+        var emoticonsImg = [
+            '{{ asset('img/smile.png') }}',
+            '{{ asset('img/sad.png') }}',
+            '{{ asset('img/wink.png') }}',
+            '{{ asset('img/razz.png') }}',
+            '{{ asset('img/grin.png') }}',
+            '{{ asset('img/plain.png') }}',
+            '{{ asset('img/surprise.png') }}',
+            '{{ asset('img/confused.png') }}',
+            '{{ asset('img/glasses.png') }}',
+            '{{ asset('img/eek.png') }}',
+            '{{ asset('img/cool.png') }}',
+            '{{ asset('img/smile-big.png') }}',
+            '{{ asset('img/crying.png') }}',
+            '{{ asset('img/kiss.png') }}',
+            '{{ asset('img/angel.png') }}',
+            '{{ asset('img/devilish.png') }}',
+            '{{ asset('img/monkey.png') }}',
+            '{{ asset('img/idea.png') }}',
+            '{{ asset('img/important.png') }}',
+            '{{ asset('img/help.png') }}',
+            '{{ asset('img/error.png') }}',
+            '{{ asset('img/warning.png') }}',
+            '{{ asset('img/favorite.png') }}',
+            '{{ asset('img/pepe.png') }}',
+            '{{ asset('img/internet_explorer.png') }}',
+            '{{ asset('img/cebula.png') }}',
+            '{{ asset('img/nosacz.jpg') }}',
+            '{{ asset('img/zolwik.png') }}',
+            '{{ asset('img/gintoki.png') }}',
+            '{{ asset('img/mis.png') }}',
+            '{{ asset('img/gengar.png') }}',
+            '{{ asset('img/piplup.png') }}'
+        ];
+        var newMessageSound = '{{ asset('sound/message.mp3') }}';
+    </script>
+    {#language script#}
+    <script type="text/javascript" src="{{ asset('js/' ~ locale ~ '.js') }}"></script>
+    {#chat script#}
+    <script type="text/javascript" src="{{ asset('js/chat.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.scrollTo.js') }}"></script>
+    {% if is_granted('ROLE_MODERATOR') %}
+        <script>
+            var deletePath = '{{ url('chat_delete') }}';
+        </script>
+        <script type="text/javascript" src="{{ asset('js/delete.js') }}"></script>
+    {% endif %}
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/black.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="row chat" id="chat-row-main">
+
+        <div class="col-xs-7 col-md-10" id="messages">
+            <div class="panel panel-success" id="panel-messages">
+                <div class="panel-body panel-messages no-padding">
+                    <div id="messages-box">
+                        {% for message in messages|sort %}
+                            <div class="message {{ ("@" ~ user.username in message.text) ? 'light' }}
+{{ message.privateMessage ? 'private-message' }}">
+                                <span class="date">({{ message.date|date('H:i:s') }})</span>
+                                <span class="{{ message.user_role }} text-bold nick">{{ message.username }}</span>:
+                                <span class="message-text">
+                                    {{ message.text|raw }}
+                                </span>
+                                {% if is_granted('ROLE_MODERATOR') %}
+                                    <span class="pull-right kursor" data-id="{{ message.id }}">&times;</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-5 col-md-2" id="online-users">
+            <div class="panel panel-success panel-no-padding" id="panel-users">
+                <div class="panel-body no-padding">
+                    <div class="text-bold info-text">{{ 'lang'|trans }}:</div>
+                    <div class="text-in-info language {{ locale == 'pl' ? 'active' }}" data-value="pl">PL</div>
+                    <div class="text-in-info language {{ locale == 'en' ? 'active' }}" data-value="en">EN</div>
+                    <div class="text-bold info-text">{{ 'channels'|trans }}:</div>
+                    {% for key,value in channels %}
+                        <div class="text-in-info channel {{ (key == user_channel) ? 'active' }}"
+                             data-value="{{ key }}">
+                            {% if ('channel.' ~ value)|trans != ('channel.' ~ value) %}
+                                {{ ('channel.' ~ value)|trans }}
+                            {% else %}
+                                {{ value }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="text-bold info-text">{{ 'online'|trans }}:</div>
+                    <div class="{{ user.getChatRoleAsText }} text-in-info" id="username">{{ user.username }}</div>
+                    <div id="users-box">
+                        {% for user in usersOnline %}
+                            <div class="{{ user.user_role }} text-in-info online-user"
+                                 data-value="{{ user.username }}">{{ user.username }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="logout">
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('chat_admin') }}" target="_blank">{{ 'panel'|trans }}</a>
+                        {% endif %}
+                        <a href="{{ path("chat_logout") }}" class="btn btn-info">{{ 'logout'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12" id="emoticon-row">
+            <div class="row">
+                <div class="emoticons-div" name="emoticons"></div>
+            </div>
+        </div>
+        <div class="col-xs-12" id="bbcode-row">
+            <div class="row">
+                <div class="bbcode-div" id="bbcode">
+                    <button class="btn btn-info text-bold" data-toggle="tooltip" data-title="{{ 'bbcode.boldLabel'|trans }}" data-bbcode="b">{{ 'bbcode.boldText'|trans }}</button>
+                    <button class="btn btn-info text-italic" data-toggle="tooltip" data-title="{{ 'bbcode.italicLabel'|trans }}" data-bbcode="i">{{ 'bbcode.italicText'|trans }}</button>
+                    <button class="btn btn-info text-underline" data-toggle="tooltip" data-title="{{ 'bbcode.underlineLabel'|trans }}" data-bbcode="u">{{ 'bbcode.underlineText'|trans }}</button>
+                    <button class="btn btn-info" data-toggle="tooltip" data-title="{{ 'bbcode.quoteLabel'|trans }}" data-bbcode="quote">{{ 'bbcode.quoteText'|trans }}</button>
+                    <button class="btn btn-info" data-toggle="tooltip" data-title="{{ 'bbcode.codeLabel'|trans }}" data-bbcode="code">{{ 'bbcode.codeText'|trans }}</button>
+                    <button class="btn btn-info" data-toggle="tooltip" data-title="{{ 'bbcode.urlLabel'|trans }}" data-bbcode="url">{{ 'bbcode.urlText'|trans }}</button>
+                    <button class="btn btn-info" data-toggle="tooltip" data-title="{{ 'bbcode.imgLabel'|trans }}" data-bbcode="img">{{ 'bbcode.imgText'|trans }}</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 margin-top-minus" id="text-row">
+            <div class="row">
+                <div class="col-xs-10">
+                    <textarea class="form-control" id="message-text" cols="50" rows="2"></textarea>
+                </div>
+                <div class="col-xs-2">
+                    <button class="btn btn-success btn-block" id="send">{{ 'send'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
