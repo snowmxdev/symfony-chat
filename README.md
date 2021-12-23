@@ -13,3 +13,5 @@
 Setup:
   - git clone repository
   - composer install
+  - set configure settings such as database host, port, name, ....
+  - symfony server:start
