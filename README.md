@@ -11,5 +11,5 @@
 
 
 Setup:
-  - git colone repository
+  - git clone repository
   - composer install
