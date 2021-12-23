@@ -77,7 +77,7 @@ class AdminControllerTest extends WebTestCase
     public function getUrls()
     {
         yield ['GET', '/chat/admin/'];
-        yield ['GET', '/pl/chat/admin/'];
+        yield ['GET', '/en/chat/admin/'];
     }
     /**
      * Authenticate random user or admin
